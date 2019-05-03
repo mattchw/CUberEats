@@ -57,7 +57,7 @@ public class MainActivity extends AppCompatActivity {
 
             @Override
             public void onError(FacebookException exception) {
-                exception.printStackTrace();
+
                 // App code
             }
         });
@@ -70,6 +70,7 @@ public class MainActivity extends AppCompatActivity {
         FirebaseUser currentUser = mAuth.getCurrentUser();
         if(currentUser!=null)
         updateUI();
+
     }
 
     @Override
