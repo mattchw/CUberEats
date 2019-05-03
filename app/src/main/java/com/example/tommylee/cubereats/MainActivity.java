@@ -51,11 +51,13 @@ public class MainActivity extends AppCompatActivity {
 
             @Override
             public void onCancel() {
+                Log.d("cancel","ce");
                 // App code
             }
 
             @Override
             public void onError(FacebookException exception) {
+                exception.printStackTrace();
                 // App code
             }
         });
@@ -66,7 +68,8 @@ public class MainActivity extends AppCompatActivity {
         super.onStart();
         // Check if user is signed in (non-null) and update UI accordingly.
         FirebaseUser currentUser = mAuth.getCurrentUser();
-        //updateUI(currentUser);
+        if(currentUser!=null)
+        updateUI();
     }
 
     @Override
@@ -76,23 +79,30 @@ public class MainActivity extends AppCompatActivity {
         // Pass the activity result back to the Facebook SDK
         callbackManager.onActivityResult(requestCode, resultCode, data);
     }
+    private void updateUI() {
+        Intent intent = new Intent(this, RestaurantListActivity.class);
+        finish();
+        startActivity(intent);
 
+    }
     private void handleFacebookAccessToken(AccessToken token) {
-        Log.d("FACEBOOK LOGIN", "handleFacebookAccessToken:" + token);
+        Log.d("facebooxk", "handleFacebookAccessToken:" + token.getToken());
 
         AuthCredential credential = FacebookAuthProvider.getCredential(token.getToken());
+
         mAuth.signInWithCredential(credential)
                 .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if (task.isSuccessful()) {
                             // Sign in success, update UI with the signed-in user's information
-                            Log.d("FACEBOOK LOGIN", "signInWithCredential:success");
+                            Log.d("facebooyk", "signInWithCredential:success");
                             FirebaseUser user = mAuth.getCurrentUser();
-                            //updateUI(user);
+                            updateUI();
+
                         } else {
                             // If sign in fails, display a message to the user.
-                            Log.w("FACEBOOK LOGIN", "signInWithCredential:failure", task.getException());
+                            Log.w("faceboojk", "signInWithCredential:failure", task.getException());
                             Toast.makeText(MainActivity.this, "Authentication failed.",
                                     Toast.LENGTH_SHORT).show();
                             //updateUI(null);
