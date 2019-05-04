@@ -1,18 +1,13 @@
 package com.example.tommylee.cubereats;
 
-public class Restaurant {
 
-    /**
-     * imgurl :
-     * name : Med Can
-     * time : 07:00-22:00
-     */
+public class Meal {
 
     private String imgurl;
     private String name;
-    private String time;
+    private double price;
     private String id;
-
+    private String description;
     public void setId(String id){
         this.id=id;
     }
@@ -35,11 +30,21 @@ public class Restaurant {
         this.name = name;
     }
 
-    public String getTime() {
-        return time;
+    public String getDescription() {
+        return description;
     }
 
-    public void setTime(String time) {
-        this.time = time;
+    public void setDescription(String description) {
+        this.description = description;
     }
+
+    public double getPrice() {
+        return price;
+    }
+
+    public void setPrice(double price) {
+        this.price = (double)price;
+    }
+
 }
+
