@@ -4,4 +4,6 @@
     <string name="fb_login_protocol_scheme">fb598392957238848</string>
     <string name="map_btn_text">Go to Map</string>
     <string name="title_activity_maps">Map</string>
+    <string name="title_activity_detail__inner_">Detail_Inner_Activity</string>
+    <string name="action_settings">Settings</string>
 </resources>
