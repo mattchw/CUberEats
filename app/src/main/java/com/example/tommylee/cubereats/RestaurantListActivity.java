@@ -55,7 +55,9 @@ public class RestaurantListActivity extends AppCompatActivity {
 
                     for (QueryDocumentSnapshot document : task.getResult()) {
                         Log.d("dockx", document.getId() + " => " + document.getData());
+
                         Restaurant notifPojo = document.toObject(Restaurant.class);
+                        notifPojo.setId(document.getId());
                         resultset.add(notifPojo);
 
                     }

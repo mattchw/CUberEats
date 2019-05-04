@@ -11,7 +11,14 @@ public class Restaurant {
     private String imgurl;
     private String name;
     private String time;
+    private String id;
 
+    public void setId(String id){
+        this.id=id;
+    }
+    public String getId() {
+        return id;
+    }
     public String getImgurl() {
         return imgurl;
     }
