@@ -51,13 +51,13 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
 
         if (ContextCompat.checkSelfPermission(MapsActivity.this,
-                android.Manifest.permission.ACCESS_COARSE_LOCATION)
+                android.Manifest.permission.ACCESS_FINE_LOCATION)
                 != PackageManager.PERMISSION_GRANTED) {
 
             // Permission is not granted
             // Should we show an explanation?
             if (ActivityCompat.shouldShowRequestPermissionRationale(MapsActivity.this,
-                    android.Manifest.permission.ACCESS_COARSE_LOCATION)) {
+                    android.Manifest.permission.ACCESS_FINE_LOCATION)) {
                 // Show an explanation to the user *asynchronously* -- don't block
                 // this thread waiting for the user's response! After the user
                 // sees the explanation, try again to request the permission.
@@ -69,7 +69,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                             @Override
                             public void onClick(DialogInterface dialogInterface, int i) {
                                 ActivityCompat.requestPermissions(MapsActivity.this,
-                                        new String[]{android.Manifest.permission.ACCESS_COARSE_LOCATION},
+                                        new String[]{android.Manifest.permission.ACCESS_FINE_LOCATION},
                                         MY_PERMISSIONS_REQUEST_ACCESS_COARSE_LOCATION);
                             }
                         })
@@ -86,7 +86,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             } else {
                 // No explanation needed; request the permission
                 ActivityCompat.requestPermissions(MapsActivity.this,
-                        new String[]{android.Manifest.permission.ACCESS_COARSE_LOCATION},
+                        new String[]{android.Manifest.permission.ACCESS_FINE_LOCATION},
                         MY_PERMISSIONS_REQUEST_ACCESS_COARSE_LOCATION);
 
                 // MY_PERMISSIONS_REQUEST_READ_CONTACTS is an
