@@ -48,6 +48,17 @@ public class Detail_Inner_Activity extends AppCompatActivity {
 
 
     }
+    public void AddToCart(View v)
+    {
+        /*
+        firebase connection to collection user cart
+        document for user each restaurant order (for 1?)
+        push
+        spinner?
+        finishforactivityresult
+         */
+        finishActivity(1);
+    }
     public void minusSelection(View v)
     {
         int quantity=Integer.valueOf(tv.getText().toString());
