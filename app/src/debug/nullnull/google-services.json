@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "760298016056",
+    "firebase_url": "https://cubereats-csci4430.firebaseio.com",
+    "project_id": "cubereats-csci4430",
+    "storage_bucket": "cubereats-csci4430.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:760298016056:android:64bec4fc4fa750a6",
+        "android_client_info": {
+          "package_name": "com.example.tommylee.cubereats"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "760298016056-fqu5e4c9kt45ba23083i7tfrkivq3n11.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyB2AMTA6mC8xjKS_ljMLOM6ErRy-2lSHIU"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "760298016056-fqu5e4c9kt45ba23083i7tfrkivq3n11.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
