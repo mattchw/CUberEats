@@ -26,13 +26,13 @@ import com.google.firestore.v1.Document;
 
 import java.util.ArrayList;
 
-public class RestaurantListActivity extends BaseActivity {
+public class OrderDeliveryListActivity extends BaseActivity {
     private RecyclerView recyclerView;
     private RecyclerView.Adapter mAdapter;
     private RecyclerView.LayoutManager layoutManager;
     private String[] myDataset = new String[]{"fkweo"};
     private FirebaseAuth mAuth;
-    private ArrayList<Restaurant> resultset= new ArrayList<>();
+    private ArrayList<Order> resultset= new ArrayList<>();
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -47,7 +47,7 @@ public class RestaurantListActivity extends BaseActivity {
         FirebaseFirestore db = FirebaseFirestore.getInstance();
         Source source = Source.CACHE;
 
-        CollectionReference colRef = db.collection("restaurant");
+        CollectionReference colRef = db.collection("order");
         colRef.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
             @Override
             public void onComplete(@NonNull Task<QuerySnapshot> task) {
@@ -55,7 +55,7 @@ public class RestaurantListActivity extends BaseActivity {
 
                     for (QueryDocumentSnapshot document : task.getResult()) {
                         Log.d("dockx", document.getId() + " => " + document.getData());
-                        Restaurant notifPojo = document.toObject(Restaurant.class);
+                        Order notifPojo = document.toObject(Order.class);
                         resultset.add(notifPojo);
 
                     }
@@ -80,26 +80,11 @@ public class RestaurantListActivity extends BaseActivity {
         recyclerView.setLayoutManager(layoutManager);
 
         // specify an adapter (see also next example)
-        mAdapter = new RestaurantListAdapter(resultset,getApplicationContext());
+        mAdapter = new OrderListAdapter(resultset,getApplicationContext());
         recyclerView.setAdapter(mAdapter);
 
     }
-//    @Override
-//    public boolean onOptionsItemSelected(MenuItem item) {
-//        // Handle item selection
-//        switch (item.getItemId()) {
-//            case R.id.logout:
-//                FirebaseAuth.getInstance().signOut();
-//                LoginManager.getInstance().logOut();
-//                Intent intent = new Intent(this, MainActivity.class);
-//                finish();
-//                startActivity(intent);
-//
-//                return true;
-//            default:
-//                return super.onOptionsItemSelected(item);
-//        }
-//    }
+
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.restaurant_menu, menu);
