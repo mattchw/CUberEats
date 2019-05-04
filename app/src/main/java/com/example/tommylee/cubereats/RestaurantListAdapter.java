@@ -8,6 +8,8 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
+
 import java.lang.reflect.Array;
 import java.util.ArrayList;
 
@@ -55,6 +57,14 @@ public class RestaurantListAdapter extends RecyclerView.Adapter<RestaurantListAd
         // - replace the contents of the view with that element
         holder.name.setText(mDataset.get(position).getName());
         holder.time.setText(mDataset.get(position).getTime());
+
+        Glide
+                .with(mContext)
+                .load(mDataset.get(position).getImgurl())
+                .centerCrop()
+                .placeholder(R.drawable.loading_spinner)
+                .into(holder.iv);
+
     }
 
     // Return the size of your dataset (invoked by the layout manager)

@@ -2,4 +2,6 @@
     <string name="app_name">CUber Eats</string>
     <string name="facebook_app_id">598392957238848</string>
     <string name="fb_login_protocol_scheme">fb598392957238848</string>
+    <string name="map_btn_text">Go to Map</string>
+    <string name="title_activity_maps">Map</string>
 </resources>
