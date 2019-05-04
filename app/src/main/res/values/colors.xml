@@ -4,6 +4,6 @@
     <color name="colorPrimaryDark">#303F9F</color>
     <color name="colorAccent">#FF4081</color>
     <color name="toolbar">#271c3f</color>
-    <color name="yellowDark">#9B870C</color>
-    <color name="yellowLight">#dbc300</color>
+    <color name="yellowDark">#008081</color>
+    <color name="yellowLight">#4f97a3</color>
 </resources>

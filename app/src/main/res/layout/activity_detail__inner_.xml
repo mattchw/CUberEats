@@ -47,7 +47,7 @@
 
         android:text="Add to the cart"
         android:textColor="#fff"
-        android:background="@color/toolbar"
+        android:background="#1d2951"
         android:layout_gravity="bottom"
          />
 </android.support.design.widget.CoordinatorLayout>
