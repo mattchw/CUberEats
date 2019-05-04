@@ -44,7 +44,7 @@
         android:id="@+id/button2"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-
+        android:onClick="AddToCart"
         android:text="Add to the cart"
         android:textColor="#fff"
         android:background="#1d2951"
