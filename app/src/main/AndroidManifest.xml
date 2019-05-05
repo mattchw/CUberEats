@@ -79,6 +79,8 @@
             android:label="@string/title_activity_detail__inner_"
             android:theme="@style/AppTheme.NoActionBar"></activity>
         <activity android:name=".YourOrderListActivity" />
+
+        <activity android:name=".YourOrderPayment"></activity>
     </application>
 
 </manifest>

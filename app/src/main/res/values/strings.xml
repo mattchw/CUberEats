@@ -14,4 +14,8 @@
 
     <string name="paid">Paid</string>
     <string name="unpaid">Unpaid</string>
+
+    <string name="order_payment_title">Your Order</string>
+    <string name="make_payment">Make Payment</string>
+    <string name="total_payment">Total: $</string>
 </resources>
