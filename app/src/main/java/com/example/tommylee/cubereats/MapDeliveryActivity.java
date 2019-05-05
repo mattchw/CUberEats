@@ -33,7 +33,7 @@ import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.GeoPoint;
 
-public class MapsActivity extends FragmentActivity implements OnMapReadyCallback, TaskLoadedCallback {
+public class MapDeliveryActivity extends FragmentActivity implements OnMapReadyCallback, TaskLoadedCallback {
     private static final int REQUEST_LOCATION_PERMISSION = 1;
 
     private GoogleMap mMap;
@@ -82,13 +82,6 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             }
         });
 
-
-
-        if (mapMode.equals("customer")) {
-            View mapCardView = findViewById(R.id.card_view);
-            mapCardView.setVisibility(View.INVISIBLE);
-        }
-
         // Obtain the SupportMapFragment and get notified when the map is ready to be used.
         SupportMapFragment mSupportMapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
@@ -120,7 +113,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             @Override
             public void onClick(View v) {
                 String url = getUrl(userPosition.getPosition(), deliveryDest.getPosition(), "driving");
-                new FetchURL(MapsActivity.this).execute(url, "driving");
+                new FetchURL(MapDeliveryActivity.this).execute(url, "driving");
             }
         });
     }

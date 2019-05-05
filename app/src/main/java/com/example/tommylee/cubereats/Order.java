@@ -1,5 +1,7 @@
 package com.example.tommylee.cubereats;
 
+import com.google.firebase.firestore.GeoPoint;
+
 import java.util.ArrayList;
 
 public class Order {
@@ -17,6 +19,7 @@ public class Order {
     private ArrayList<String> mealID = new ArrayList<>();
     private boolean isPaid;
     private String documentID;
+    private GeoPoint driverCoordinate;
 
     public String getCustomerID() {
         return customerID;
@@ -50,9 +53,17 @@ public class Order {
         this.driverName = driverName;
     }
 
-    public boolean getPaid() { return isPaid; }
+    public GeoPoint getDriverCoordinate() {
+        return driverCoordinate;
+    }
 
-    public void setPaid(boolean paid) {
+    public void setDriverCoordinate(GeoPoint driverCoordinate) {
+        this.driverCoordinate = driverCoordinate;
+    }
+
+    public boolean getIsPaid() { return isPaid; }
+
+    public void setIsPaid(boolean paid) {
         isPaid = paid;
     }
 

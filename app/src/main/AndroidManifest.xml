@@ -50,13 +50,8 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".RestaurantListActivity">
-
-        </activity>
-        <activity android:name=".OrderDeliveryListActivity">
-
-        </activity>
-
+        <activity android:name=".RestaurantListActivity"></activity>
+        <activity android:name=".OrderDeliveryListActivity"></activity>
         <activity android:name=".RestaurantDetailActivity" />
 
         <!--
@@ -77,10 +72,10 @@
         <activity
             android:name=".Detail_Inner_Activity"
             android:label="@string/title_activity_detail__inner_"
-            android:theme="@style/AppTheme.NoActionBar"></activity>
+            android:theme="@style/AppTheme.NoActionBar" />
         <activity android:name=".YourOrderListActivity" />
-
-        <activity android:name=".YourOrderPayment"></activity>
+        <activity android:name=".YourOrderPayment" />
+        <activity android:name=".MapDeliveryActivity"></activity>
     </application>
 
 </manifest>

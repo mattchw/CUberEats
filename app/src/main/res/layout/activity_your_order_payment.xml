@@ -39,7 +39,7 @@
         android:layout_marginLeft="10dp"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        app:layout_constraintBottom_toTopOf="@+id/button4"
+        app:layout_constraintBottom_toTopOf="@+id/payment_button"
         tools:layout_editor_absoluteX="19dp">
 
 
@@ -60,7 +60,7 @@
     </LinearLayout>
 
     <Button
-        android:id="@+id/button4"
+        android:id="@+id/payment_button"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="10dp"

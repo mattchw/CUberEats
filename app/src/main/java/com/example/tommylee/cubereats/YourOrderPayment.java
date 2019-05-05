@@ -9,6 +9,8 @@ import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
+import android.view.View;
+import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -43,6 +45,7 @@ public class YourOrderPayment extends AppCompatActivity {
     RecyclerView recyclerView;
     private TextView paymentPrice;
     ArrayList<Meal> meals=new ArrayList<>();
+    private Button paymentButton;
     public double totalPrice = 0.0;
     int finalI=0;
     private void initAdapter(){
@@ -78,6 +81,8 @@ public class YourOrderPayment extends AppCompatActivity {
        // paymentMeals = (TextView) findViewById(R.id.payment_meals);
         paymentPrice = (TextView) findViewById(R.id.payment_price);
         location = (TextView) findViewById(R.id.location);
+        paymentButton = (Button) findViewById(R.id.payment_button);
+
         Intent intent = getIntent();
         String orderID = intent.getStringExtra("orderID");
 
@@ -125,6 +130,13 @@ public class YourOrderPayment extends AppCompatActivity {
                 } else {
                     Log.e("fail", "get failed with ", task.getException());
                 }
+            }
+        });
+
+        paymentButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
             }
         });
 

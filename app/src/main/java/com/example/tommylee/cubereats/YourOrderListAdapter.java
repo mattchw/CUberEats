@@ -74,13 +74,14 @@ public class YourOrderListAdapter extends RecyclerView.Adapter<YourOrderListAdap
     @Override
     public void onBindViewHolder(final MyViewHolder holder, int position) {
         Log.e("order getid", "onBindViewHolder: " + mDataset.get(position).getDocumentID());
+        Log.e("order getpaid", "onBindViewHolder: " + mDataset.get(position).getIsPaid());
 
         if (mDataset.get(position).getDriverID() == "") {
             holder.driverName.append("Not yet taken");
         } else {
             holder.driverName.append(mDataset.get(position).getDriverID());
         }
-        if (mDataset.get(position).getPaid()) {
+        if (mDataset.get(position).getIsPaid()) {
             holder.paidStatus.setText(R.string.paid);
         } else {
             holder.paidStatus.setText(R.string.unpaid);
@@ -106,23 +107,25 @@ public class YourOrderListAdapter extends RecyclerView.Adapter<YourOrderListAdap
                     }
                 }
             });
-
-            // if (i == 0) {
-            //     holder.mealName.setText(mDataset.get(position).getMealID().get(i));
-            //     holder.mealName.append("\n");
-            // } else {
-            //     holder.mealName.append(mDataset.get(position).getMealID().get(i));
-            //     holder.mealName.append("\n");
-            // }
         }
 
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Log.e("item click", "onClick: hehe");
-                Intent intent = new Intent(mContext, YourOrderPayment.class);
-                intent.putExtra("orderID", mDataset.get(holder.getAdapterPosition()).getDocumentID());
-                mContext.startActivity(intent);
+                Log.e("order getpaid", "onBindViewHolder: " + mDataset.get(holder.getAdapterPosition()).getIsPaid());
+                if (mDataset.get(holder.getAdapterPosition()).getIsPaid()) {
+                    Log.e("PAID", "onClick");
+                    Intent intent = new Intent(mContext, MapsActivity.class);
+                    intent.putExtra("mapMode", "customer");
+                    intent.putExtra("orderID", mDataset.get(holder.getAdapterPosition()).getDocumentID());
+
+                    mContext.startActivity(intent);
+                } else {
+                    Log.e("unpaid", "onClick");
+                    Intent intent = new Intent(mContext, YourOrderPayment.class);
+                    intent.putExtra("orderID", mDataset.get(holder.getAdapterPosition()).getDocumentID());
+                    mContext.startActivity(intent);
+                }
             }
         });
     }
