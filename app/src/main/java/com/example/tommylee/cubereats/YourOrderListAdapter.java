@@ -15,6 +15,9 @@ import android.widget.Toast;
 import com.bumptech.glide.Glide;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.firestore.CollectionReference;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.lang.reflect.Array;
 import java.util.ArrayList;
@@ -22,7 +25,10 @@ import java.util.ArrayList;
 public class YourOrderListAdapter extends RecyclerView.Adapter<YourOrderListAdapter.MyViewHolder> {
     private ArrayList<Order> mDataset;
     private Context mContext;
+
     FirebaseUser currentFireBaseUser = FirebaseAuth.getInstance().getCurrentUser();
+    FirebaseFirestore db = FirebaseFirestore.getInstance();
+    CollectionReference colRef = db.collection("order");
 
     // Provide a reference to the views for each data item
     // Complex data items may need more than one view per item, and
@@ -81,6 +87,13 @@ public class YourOrderListAdapter extends RecyclerView.Adapter<YourOrderListAdap
 
             }
         }
+
+        holder.itemView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+            }
+        });
     }
 
     // Return the size of your data set (invoked by the layout manager)
