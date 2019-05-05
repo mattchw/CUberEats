@@ -5,6 +5,8 @@ import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
+import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -31,6 +33,7 @@ public class YourOrderPayment extends AppCompatActivity {
     private String[] mealIDs;
     private TextView paymentMeals;
     private TextView paymentPrice;
+    private Button paymentButton;
     public double totalPrice = 0.0;
 
     @Override
@@ -39,6 +42,7 @@ public class YourOrderPayment extends AppCompatActivity {
         setContentView(R.layout.activity_your_order_payment);
         paymentMeals = (TextView) findViewById(R.id.payment_meals);
         paymentPrice = (TextView) findViewById(R.id.payment_price);
+        paymentButton = (Button) findViewById(R.id.payment_button);
 
         Intent intent = getIntent();
         String orderID = intent.getStringExtra("orderID");
@@ -77,6 +81,13 @@ public class YourOrderPayment extends AppCompatActivity {
                 } else {
                     Log.e("fail", "get failed with ", task.getException());
                 }
+            }
+        });
+
+        paymentButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
             }
         });
 
