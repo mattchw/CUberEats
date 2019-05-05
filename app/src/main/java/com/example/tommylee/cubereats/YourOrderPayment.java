@@ -27,15 +27,18 @@ public class YourOrderPayment extends AppCompatActivity {
     CollectionReference orderColRef = db.collection("order");
     CollectionReference mealColRef = db.collection("meal");
 
-    private ArrayList<String> mealIDs;
-    JSONArray jObj;
-    private TextView payment_meals;
+    private String tempMealIDs;
+    private String[] mealIDs;
+    private TextView paymentMeals;
+    private TextView paymentPrice;
+    public double totalPrice = 0.0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_your_order_payment);
-        payment_meals = (TextView) findViewById(R.id.payment_meals);
+        paymentMeals = (TextView) findViewById(R.id.payment_meals);
+        paymentPrice = (TextView) findViewById(R.id.payment_price);
 
         Intent intent = getIntent();
         String orderID = intent.getStringExtra("orderID");
@@ -46,13 +49,26 @@ public class YourOrderPayment extends AppCompatActivity {
                 if (task.isSuccessful()) {
                     DocumentSnapshot document = task.getResult();
                     if (document.exists()) {
-                        Log.e("doc", "data: " + document.getData().get("mealID"));
+                        tempMealIDs = document.getData().get("mealID").toString();
+                        tempMealIDs = tempMealIDs.replaceAll("[\\[\\]\\(\\)]", "");
+                        mealIDs = tempMealIDs.split("\\s*,\\s*");
 
-                        try {
-                            jObj = new JSONArray(document.getData().get("mealID").toString());
-                        } catch (JSONException e) {
-                            Log.e("MYAPP", "unexpected JSON exception", e);
-                            // Do something to recover ... or kill the app.
+                        for (int i = 0; i < mealIDs.length; i++) {
+                            final int finalI = i;
+                            mealColRef.document(mealIDs[i]).get()
+                                    .addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                                        @Override
+                                        public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                                            DocumentSnapshot document = task.getResult();
+                                            paymentMeals.append(document.getData().get("name").toString());
+                                            paymentMeals.append("\n");
+                                            totalPrice += Double.parseDouble(document.getData().get("price").toString());
+                                            Log.e("price", "" + totalPrice);
+                                            if (finalI == mealIDs.length - 1) {
+                                                 paymentPrice.append("" + totalPrice);
+                                            }
+                                        }
+                                    });
                         }
 
                     } else {
