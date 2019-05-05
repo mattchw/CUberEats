@@ -57,7 +57,7 @@ public class Detail_Inner_Activity extends AppCompatActivity {
         spinner?
         finishforactivityresult
          */
-        finishActivity(1);
+        finish();
     }
     public void minusSelection(View v)
     {
