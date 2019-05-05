@@ -72,7 +72,7 @@ public class YourOrderListAdapter extends RecyclerView.Adapter<YourOrderListAdap
     }
 
     @Override
-    public void onBindViewHolder(@NonNull MyViewHolder holder, int position) {
+    public void onBindViewHolder(final MyViewHolder holder, int position) {
         Log.e("order getid", "onBindViewHolder: " + mDataset.get(position).getDocumentID());
 
         if (mDataset.get(position).getDriverID() == "") {
@@ -87,19 +87,42 @@ public class YourOrderListAdapter extends RecyclerView.Adapter<YourOrderListAdap
         }
 
         for (int i = 0; i < mDataset.get(position).getMealID().size(); i++) {
-            if (i == 0) {
-                holder.mealName.setText(mDataset.get(position).getMealID().get(i));
-                holder.mealName.append("\n");
-            } else {
-                holder.mealName.append(mDataset.get(position).getMealID().get(i));
-                holder.mealName.append("\n");
-            }
+            mealColRef.document(mDataset.get(position).getMealID().get(i))
+                    .get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                @Override
+                public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                    if (task.isSuccessful()) {
+                        DocumentSnapshot document = task.getResult();
+                        if (document.exists()) {
+                            // Log.e("doc", "DocumentSnapshot data: " + document.getData());
+                             Log.e("doc", document.getData().get("name").toString());
+                            holder.mealName.append(document.getData().get("name").toString());
+                            holder.mealName.append("\n");
+                        } else {
+                            Log.d("error", "No such document");
+                        }
+                    } else {
+                        Log.d("fail", "get failed with ", task.getException());
+                    }
+                }
+            });
+
+            // if (i == 0) {
+            //     holder.mealName.setText(mDataset.get(position).getMealID().get(i));
+            //     holder.mealName.append("\n");
+            // } else {
+            //     holder.mealName.append(mDataset.get(position).getMealID().get(i));
+            //     holder.mealName.append("\n");
+            // }
         }
 
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Log.e("item click", "onClick: hehe");
+                Intent intent = new Intent(mContext, YourOrderPayment.class);
+                intent.putExtra("orderID", mDataset.get(holder.getAdapterPosition()).getDocumentID());
+                mContext.startActivity(intent);
             }
         });
     }
