@@ -83,7 +83,7 @@ public class RestaurantDetailActivity extends AppCompatActivity {
                         notifPojo.setImgurl(document.get("imgurl").toString());
                         notifPojo.setName(document.get("name").toString());
                         notifPojo.setPrice(Double.parseDouble(document.get("price").toString()));
-                        notifPojo.setDescription("HKD "+document.get("description").toString());
+                        notifPojo.setDescription(document.get("description").toString());
                         notifPojo.setId(document.getId());
                         dataset.add(notifPojo);
 
@@ -102,7 +102,7 @@ public class RestaurantDetailActivity extends AppCompatActivity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if(resultCode==0)
+        if(resultCode==1)
         {
             View parentLayout = findViewById(android.R.id.content);
 
@@ -111,7 +111,7 @@ public class RestaurantDetailActivity extends AppCompatActivity {
             sbView.setBackgroundColor(ContextCompat.getColor(this, R.color.colorAccent));
             sb.show();
         }
-        else
+        else if (resultCode==2)
         {
             View parentLayout = findViewById(android.R.id.content);
             Snackbar sb= Snackbar.make(parentLayout, "Added to cart successfully!", Snackbar.LENGTH_LONG);

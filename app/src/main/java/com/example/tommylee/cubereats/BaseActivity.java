@@ -7,12 +7,17 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.content.Intent;
+import android.support.v7.app.AppCompatActivity;
+import android.view.MenuItem;
 
 import com.facebook.login.LoginManager;
 import com.google.firebase.auth.FirebaseAuth;
 
 public abstract class BaseActivity extends AppCompatActivity {
+
     Activity curActivity;
+
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         // Handle item selection
@@ -29,14 +34,15 @@ public abstract class BaseActivity extends AppCompatActivity {
                 return true;
 
             case R.id.delivery:
-                curActivity = this;
-                if(null != curActivity){
-                    if(!(curActivity instanceof OrderDeliveryListActivity)){
-                        Intent deliveryIntent = new Intent(this, OrderDeliveryListActivity.class);
-                        finish();
-                        startActivity(deliveryIntent);
-                    }
-                }
+                Intent deliveryIntent = new Intent(this, OrderDeliveryListActivity.class);
+                finish();
+                startActivity(deliveryIntent);
+                return true;
+
+            case R.id.order:
+                Intent orderIntent = new Intent(this, YourOrderListActivity.class);
+                finish();
+                startActivity(orderIntent);
                 return true;
 
             case R.id.logout:
