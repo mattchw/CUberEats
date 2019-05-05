@@ -77,8 +77,8 @@ public class MealAdapter extends RecyclerView.Adapter<MealAdapter.MyViewHolder> 
         // - get element from your dataset at this position
         // - replace the contents of the view with that element
         holder.name.setText(mDataset.get(position).getName());
-        holder.price.setText(String.valueOf(mDataset.get(position).getPrice()));
-
+        holder.price.setText("HKD "+String.valueOf(mDataset.get(position).getPrice()));
+        holder.description.setText(mDataset.get(position).getDescription());
         Glide
                 .with(mContext)
                 .load(mDataset.get(position).getImgurl())

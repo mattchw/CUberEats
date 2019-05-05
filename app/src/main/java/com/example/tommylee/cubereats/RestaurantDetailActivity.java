@@ -83,7 +83,7 @@ public class RestaurantDetailActivity extends AppCompatActivity {
                         notifPojo.setImgurl(document.get("imgurl").toString());
                         notifPojo.setName(document.get("name").toString());
                         notifPojo.setPrice(Double.parseDouble(document.get("price").toString()));
-                        notifPojo.setDescription("HKD "+document.get("description").toString());
+                        notifPojo.setDescription(document.get("description").toString());
                         notifPojo.setId(document.getId());
                         dataset.add(notifPojo);
 

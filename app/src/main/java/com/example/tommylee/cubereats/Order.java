@@ -1,5 +1,7 @@
 package com.example.tommylee.cubereats;
 
+import java.util.ArrayList;
+
 public class Order {
 
     /**
@@ -12,6 +14,9 @@ public class Order {
     private String driverID;
     private String customerName;
     private String driverName;
+    private ArrayList<String> mealID = new ArrayList<>();
+    private boolean isPaid;
+    private String documentID;
 
     public String getCustomerID() {
         return customerID;
@@ -45,4 +50,21 @@ public class Order {
         this.driverName = driverName;
     }
 
+    public boolean getPaid() { return isPaid; }
+
+    public void setPaid(boolean paid) {
+        isPaid = paid;
+    }
+
+    public void setDocumentID(String documentID) { this.documentID = documentID; }
+
+    public String getDocumentID() { return documentID; }
+
+    public ArrayList<String> getMealID() {
+        return mealID;
+    }
+
+    public void setMealID(ArrayList<String> mealID) {
+        this.mealID = mealID;
+    }
 }
