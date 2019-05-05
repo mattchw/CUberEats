@@ -103,7 +103,7 @@ public class Detail_Inner_Activity extends AppCompatActivity {
                 }
             }
         });
-        setResult(0);
+        setResult(1);
         finish();
     }
     private void isAddedToCartAlready()
@@ -212,7 +212,7 @@ public class Detail_Inner_Activity extends AppCompatActivity {
 
                         //add to exist order
                     }
-                    setResult(1);
+                    setResult(2);
                     finish();
                     //initAdapter();
                 } else {
