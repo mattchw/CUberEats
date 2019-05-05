@@ -3,7 +3,10 @@ package com.example.tommylee.cubereats;
 import android.app.Activity;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
+import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.view.View;
 
 import com.facebook.login.LoginManager;
 import com.google.firebase.auth.FirebaseAuth;

@@ -47,7 +47,19 @@
         android:onClick="AddToCart"
         android:text="Add to the cart"
         android:textColor="#fff"
+        android:visibility="gone"
         android:background="#1d2951"
         android:layout_gravity="bottom"
          />
+    <Button
+        android:id="@+id/button3"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:onClick="RemoveFromCart"
+        android:text="Remove from the cart"
+        android:textColor="#fff"
+        android:background="#7c0a02"
+        android:visibility="gone"
+        android:layout_gravity="bottom"
+        />
 </android.support.design.widget.CoordinatorLayout>
