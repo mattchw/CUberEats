@@ -9,12 +9,14 @@ import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.Toast;
 
 import com.facebook.login.LoginManager;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
@@ -53,11 +55,11 @@ public class OrderDeliveryListActivity extends BaseActivity {
             public void onComplete(@NonNull Task<QuerySnapshot> task) {
                 if (task.isSuccessful()) {
 
-                    for (QueryDocumentSnapshot document : task.getResult()) {
+                    for (final QueryDocumentSnapshot document : task.getResult()) {
                         Log.d("dockx", document.getId() + " => " + document.getData());
                         Order notifPojo = document.toObject(Order.class);
-                        resultset.add(notifPojo);
 
+                        resultset.add(notifPojo);
                     }
                     initRecyclerView();
                 } else {
@@ -65,9 +67,28 @@ public class OrderDeliveryListActivity extends BaseActivity {
                 }
             }
         });
-
-
     }
+
+    private void getUserName(String uid){
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
+        DocumentReference docRef = db.collection("user").document(uid);
+        docRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                if (task.isSuccessful()) {
+                    DocumentSnapshot document = task.getResult();
+                    if (document.exists()) {
+                        Log.d("ORDER", "DocumentSnapshot data: " + document.getData());
+                    } else {
+                        Log.d("ORDER", "No such document");
+                    }
+                } else {
+                    Log.d("ORDER", "get failed with ", task.getException());
+                }
+            }
+        });
+    }
+
     private void initRecyclerView(){
         recyclerView = (RecyclerView) findViewById(R.id.my_recycler_view);
 

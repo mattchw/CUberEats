@@ -17,12 +17,18 @@ import com.facebook.login.LoginResult;
 import com.facebook.login.widget.LoginButton;
 import com.facebook.places.Places;
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthCredential;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FacebookAuthProvider;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.firestore.FirebaseFirestore;
+
+import java.util.HashMap;
+import java.util.Map;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -96,10 +102,35 @@ public class MainActivity extends AppCompatActivity {
         callbackManager.onActivityResult(requestCode, resultCode, data);
     }
     private void updateUI() {
+        updateUserDB();
         Intent intent = new Intent(this, RestaurantListActivity.class);
         finish();
         startActivity(intent);
 
+    }
+    private void updateUserDB() {
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
+
+        FirebaseUser currUser = mAuth.getCurrentUser();
+
+        Map<String, Object> user = new HashMap<>();
+        user.put("uid", currUser.getUid());
+        user.put("name", currUser.getDisplayName());
+
+        db.collection("user").document(currUser.getUid())
+                .set(user)
+                .addOnSuccessListener(new OnSuccessListener<Void>() {
+                    @Override
+                    public void onSuccess(Void aVoid) {
+                        Log.d("FACEBOOK", "DocumentSnapshot successfully written!");
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        Log.w("FACEBOOK", "Error writing document", e);
+                    }
+                });
     }
     private void handleFacebookAccessToken(AccessToken token) {
         Log.d("facebooxk", "handleFacebookAccessToken:" + token.getToken());
