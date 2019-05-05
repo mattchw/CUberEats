@@ -13,7 +13,7 @@ public class Order {
     private String customerID;
     private String driverID;
     private ArrayList<String> mealID = new ArrayList<>();
-    private Boolean isPaid;
+    private boolean isPaid;
     private String documentID;
 
     public String getCustomerID() {
@@ -32,13 +32,15 @@ public class Order {
         this.driverID = driverID;
     }
 
-    public Boolean getPaid() { return isPaid; }
+    public boolean getPaid() { return isPaid; }
 
-    public void setPaid(Boolean paid) {
+    public void setPaid(boolean paid) {
         isPaid = paid;
     }
 
     public void setDocumentID(String documentID) { this.documentID = documentID; }
+
+    public String getDocumentID() { return documentID; }
 
     public ArrayList<String> getMealID() {
         return mealID;

@@ -1,6 +1,7 @@
 package com.example.tommylee.cubereats;
 
 import android.content.Context;
+import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.text.Layout;
@@ -13,11 +14,17 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.firestore.QuerySnapshot;
+
+import org.w3c.dom.Text;
 
 import java.lang.reflect.Array;
 import java.util.ArrayList;
@@ -28,7 +35,8 @@ public class YourOrderListAdapter extends RecyclerView.Adapter<YourOrderListAdap
 
     FirebaseUser currentFireBaseUser = FirebaseAuth.getInstance().getCurrentUser();
     FirebaseFirestore db = FirebaseFirestore.getInstance();
-    CollectionReference colRef = db.collection("order");
+    CollectionReference orderColRef = db.collection("order");
+    CollectionReference mealColRef = db.collection("meal");
 
     // Provide a reference to the views for each data item
     // Complex data items may need more than one view per item, and
@@ -37,6 +45,7 @@ public class YourOrderListAdapter extends RecyclerView.Adapter<YourOrderListAdap
     public static class MyViewHolder extends RecyclerView.ViewHolder {
         // each data item is just a string in this case
         public TextView mealName, driverName, paidStatus;
+
         public MyViewHolder(View v) {
             super(v);
         }
@@ -58,40 +67,39 @@ public class YourOrderListAdapter extends RecyclerView.Adapter<YourOrderListAdap
         MyViewHolder holder = new MyViewHolder(view);
         holder.mealName = (TextView) view.findViewById(R.id.mealName);
         holder.driverName = (TextView) view.findViewById(R.id.driverName);
-
+        holder.paidStatus = (TextView) view.findViewById(R.id.payStatus);
         return holder;
     }
 
     @Override
     public void onBindViewHolder(@NonNull MyViewHolder holder, int position) {
-        if (currentFireBaseUser.getUid() == mDataset.get(position).getCustomerID()) {
-            if (mDataset.get(position).getDriverID() != null) {
-                holder.mealName.append(mDataset.get(position).getDriverID());
-            } else {
-                holder.mealName.append("Not yet taken");
-            }
-            if (mDataset.get(position).getPaid()) {
-                holder.paidStatus.setText(R.string.paid);
-            } else {
-                holder.paidStatus.setText(R.string.unpaid);
-            }
+        Log.e("order getid", "onBindViewHolder: " + mDataset.get(position).getDocumentID());
 
-            for (int i = 0; i < mDataset.get(position).getMealID().size(); i++) {
-                if (i == 0) {
-                    holder.mealName.setText(mDataset.get(position).getMealID().get(i));
-                    holder.mealName.append("\n");
-                } else if (i > 0) {
-                    holder.mealName.append(mDataset.get(position).getMealID().get(i));
-                    holder.mealName.append("\n");
-                }
+        if (mDataset.get(position).getDriverID() == "") {
+            holder.driverName.append("Not yet taken");
+        } else {
+            holder.driverName.append(mDataset.get(position).getDriverID());
+        }
+        if (mDataset.get(position).getPaid()) {
+            holder.paidStatus.setText(R.string.paid);
+        } else {
+            holder.paidStatus.setText(R.string.unpaid);
+        }
 
+        for (int i = 0; i < mDataset.get(position).getMealID().size(); i++) {
+            if (i == 0) {
+                holder.mealName.setText(mDataset.get(position).getMealID().get(i));
+                holder.mealName.append("\n");
+            } else {
+                holder.mealName.append(mDataset.get(position).getMealID().get(i));
+                holder.mealName.append("\n");
             }
         }
 
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                Log.e("item click", "onClick: hehe");
             }
         });
     }
@@ -99,12 +107,6 @@ public class YourOrderListAdapter extends RecyclerView.Adapter<YourOrderListAdap
     // Return the size of your data set (invoked by the layout manager)
     @Override
     public int getItemCount() {
-        int count = 0;
-        for (int i = 0; i < mDataset.size(); i++) {
-            if (currentFireBaseUser.getUid() == mDataset.get(i).getCustomerID()) {
-                count++;
-            }
-        }
-        return count;
+        return mDataset.size();
     }
 }

@@ -11,6 +11,7 @@ import android.view.Menu;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
@@ -24,6 +25,7 @@ public class YourOrderListActivity extends BaseActivity {
     private RecyclerView.Adapter mAdapter;
     private RecyclerView.LayoutManager layoutManager;
     // private String[] myDataset = new String[]{"fkweo"};
+    private String userID = null;
 
     FirebaseAuth mAuth;
     private ArrayList<Order> result_set= new ArrayList<>();
@@ -39,19 +41,20 @@ public class YourOrderListActivity extends BaseActivity {
 
     private void getFromFireBase() {
         FirebaseFirestore db = FirebaseFirestore.getInstance();
+        FirebaseUser currentFireBaseUser = FirebaseAuth.getInstance().getCurrentUser();
+        userID = currentFireBaseUser.getUid();
         Source source = Source.CACHE;
 
         CollectionReference colRef = db.collection("order");
-        colRef.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+        colRef.whereEqualTo("customerID", userID).get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
             @Override
             public void onComplete(@NonNull Task<QuerySnapshot> task) {
                 if (task.isSuccessful()) {
-
                     for (QueryDocumentSnapshot document : task.getResult()) {
                         Log.e("dockx", document.getId() + " => " + document.getData());
                         Order notifPojo = document.toObject(Order.class);
+                        notifPojo.setDocumentID(document.getId());
                         result_set.add(notifPojo);
-
                     }
                     initRecyclerView();
                 } else {
