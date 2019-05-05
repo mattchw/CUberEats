@@ -5,9 +5,12 @@
 
     <string name="map_btn_text">Go to Map</string>
     <string name="title_activity_maps">Map</string>
-    
+
     <string name="customer_image">Customer Image</string>
     <string name="customer_name_label">Customer</string>
     <string name="customer_addr_label">Address</string>
     <string name="map_suggest_route">Suggest Route</string>
+
+    <string name="paid">Paid</string>
+    <string name="unpaid">Unpaid</string>
 </resources>
