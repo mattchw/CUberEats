@@ -28,7 +28,7 @@ public abstract class BaseActivity extends AppCompatActivity {
             case R.id.delivery:
                 curActivity = this;
                 if(null != curActivity){
-                    if(!(curActivity instanceof RestaurantListActivity)){
+                    if(!(curActivity instanceof OrderDeliveryListActivity)){
                         Intent deliveryIntent = new Intent(this, OrderDeliveryListActivity.class);
                         finish();
                         startActivity(deliveryIntent);
@@ -43,7 +43,7 @@ public abstract class BaseActivity extends AppCompatActivity {
                 finish();
                 startActivity(intent);
                 return true;
-                
+
             default:
                 return super.onOptionsItemSelected(item);
         }
