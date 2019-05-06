@@ -33,6 +33,9 @@ public class YourOrderListAdapter extends RecyclerView.Adapter<YourOrderListAdap
     private ArrayList<Order> mDataset;
     private Context mContext;
 
+    private double total = 0.0;
+    int counter = 0;
+
     FirebaseUser currentFireBaseUser = FirebaseAuth.getInstance().getCurrentUser();
     FirebaseFirestore db = FirebaseFirestore.getInstance();
     CollectionReference orderColRef = db.collection("order");
@@ -44,7 +47,7 @@ public class YourOrderListAdapter extends RecyclerView.Adapter<YourOrderListAdap
 
     public static class MyViewHolder extends RecyclerView.ViewHolder {
         // each data item is just a string in this case
-        public TextView mealName, driverName, paidStatus;
+        public TextView mealName, driverName, paidStatus, totalPrice;
 
         public MyViewHolder(View v) {
             super(v);
@@ -68,11 +71,12 @@ public class YourOrderListAdapter extends RecyclerView.Adapter<YourOrderListAdap
         holder.mealName = (TextView) view.findViewById(R.id.mealName);
         holder.driverName = (TextView) view.findViewById(R.id.driverName);
         holder.paidStatus = (TextView) view.findViewById(R.id.payStatus);
+        holder.totalPrice = (TextView) view.findViewById(R.id.totalPrice);
         return holder;
     }
 
     @Override
-    public void onBindViewHolder(final MyViewHolder holder, int position) {
+    public void onBindViewHolder(final MyViewHolder holder, final int position) {
         Log.e("order getid", "onBindViewHolder: " + mDataset.get(position).getDocumentID());
         Log.e("order getpaid", "onBindViewHolder: " + mDataset.get(position).getIsPaid());
 
@@ -97,8 +101,13 @@ public class YourOrderListAdapter extends RecyclerView.Adapter<YourOrderListAdap
                         if (document.exists()) {
                             // Log.e("doc", "DocumentSnapshot data: " + document.getData());
                              Log.e("doc", document.getData().get("name").toString());
-                            holder.mealName.append(document.getData().get("name").toString());
+                             counter++;
+                            holder.mealName.append(" - "+document.getData().get("name").toString());
                             holder.mealName.append("\n");
+                            total += Double.parseDouble(document.getData().get("price").toString());
+                            if (counter == mDataset.get(position).getMealID().size()) {
+                                holder.totalPrice.append(""+total);
+                            }
                         } else {
                             Log.d("error", "No such document");
                         }
