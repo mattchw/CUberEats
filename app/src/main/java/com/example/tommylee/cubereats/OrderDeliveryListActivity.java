@@ -75,6 +75,7 @@ public class OrderDeliveryListActivity extends BaseActivity {
                         Log.d("dockx", document.getId() + " => " + document.getData());
                         Order notifPojo = document.toObject(Order.class);
                         notifPojo.setDocumentID(document.getId());
+                        if(notifPojo.getIsPaid())
                         resultset.add(notifPojo);
 
                     }

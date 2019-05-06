@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.location.Address;
 import android.location.Geocoder;
 import android.support.annotation.NonNull;
+import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
@@ -62,8 +63,9 @@ public class YourOrderPayment extends AppCompatActivity {
             matches = geoCoder.getFromLocation(geoPoint.getLatitude(), geoPoint.getLongitude(), 1);
             Address bestMatch = (matches.isEmpty() ? null : matches.get(0));
             location.setText(bestMatch.getAddressLine(0));
-        } catch (IOException e) {
-
+        } catch (Exception e) {
+            Snackbar.make(findViewById(android.R.id.content), "Cannot determine your position", Snackbar.LENGTH_LONG)
+                    .setAction("Action", null);
         }
 
     }
