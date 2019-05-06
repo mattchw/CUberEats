@@ -11,6 +11,8 @@ import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.Menu;
 import android.view.View;
+import android.widget.Button;
+import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -37,14 +39,26 @@ public class YourOrderListActivity extends BaseActivity {
 
     FirebaseAuth mAuth;
     private ArrayList<Order> result_set= new ArrayList<>();
+    Button refreshButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_your_order_list);
         mAuth = FirebaseAuth.getInstance();
-
+        refreshButton = (Button) findViewById(R.id.refresh_button);
         getFromFireBase();
+
+        refreshButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
+                overridePendingTransition(0, 0);
+                startActivity(getIntent());
+                overridePendingTransition(0, 0);
+                Toast.makeText(getApplicationContext(), "Page refreshed!", Toast.LENGTH_SHORT);
+            }
+        });
     }
 
     private void getFromFireBase() {
