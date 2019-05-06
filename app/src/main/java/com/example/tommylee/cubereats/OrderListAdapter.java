@@ -120,6 +120,9 @@ public class OrderListAdapter extends RecyclerView.Adapter<OrderListAdapter.MyVi
                 } else {
                     if (mDataset.get(holder.getAdapterPosition()).getDriverID().equals(currentFirebaseUser.getUid())) {
                         Intent intent = new Intent(mContext, MapDeliveryActivity.class);
+
+                        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+
                         intent.putExtra("orderID", mDataset.get(holder.getAdapterPosition()).getDocumentID());
                         mContext.startActivity(intent);
                     } else {
