@@ -1,5 +1,6 @@
 package com.example.tommylee.cubereats;
 
+import android.content.Context;
 import android.content.Intent;
 import android.location.Address;
 import android.location.Geocoder;
@@ -75,8 +76,8 @@ public class YourOrderPayment extends AppCompatActivity {
         location = (TextView) findViewById(R.id.location);
         paymentButton = (Button) findViewById(R.id.payment_button);
 
-        Intent intent = getIntent();
-        String orderID = intent.getStringExtra("orderID");
+        final Intent intent = getIntent();
+        final String orderID = intent.getStringExtra("orderID");
 
         orderColRef.document(orderID).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
             @Override
@@ -124,7 +125,9 @@ public class YourOrderPayment extends AppCompatActivity {
         paymentButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                Intent paymentIntent = new Intent(YourOrderPayment.this, PaymentActivity.class);
+                paymentIntent.putExtra("orderID", orderID);
+                startActivity(paymentIntent);
             }
         });
 

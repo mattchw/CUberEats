@@ -76,7 +76,8 @@
         <activity android:name=".YourOrderListActivity" />
         <activity android:name=".YourOrderPayment" />
         <activity android:name=".MapDeliveryActivity" />
-        <activity android:name=".OrderDeliveryDetailActivity"></activity>
+        <activity android:name=".OrderDeliveryDetailActivity" />
+        <activity android:name=".PaymentActivity"></activity>
     </application>
 
 </manifest>
