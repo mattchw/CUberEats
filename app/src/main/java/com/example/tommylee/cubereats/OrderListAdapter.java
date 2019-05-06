@@ -12,12 +12,19 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.firestore.CollectionReference;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FirebaseFirestore;
 
 
 import java.lang.reflect.Array;
 import java.util.ArrayList;
 
 public class OrderListAdapter extends RecyclerView.Adapter<OrderListAdapter.MyViewHolder> {
+    FirebaseFirestore db = FirebaseFirestore.getInstance();
+    CollectionReference userColRef = db.collection("user");
     private ArrayList<Order> mDataset;
     private Context mContext;
     // Provide a reference to the views for each data item
@@ -54,11 +61,52 @@ public class OrderListAdapter extends RecyclerView.Adapter<OrderListAdapter.MyVi
 
     // Replace the contents of a view (invoked by the layout manager)
     @Override
-    public void onBindViewHolder(MyViewHolder holder, int position) {
+    public void onBindViewHolder(final MyViewHolder holder, final int position) {
+
+            userColRef.document(mDataset.get(position).getCustomerID())
+                    .get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                @Override
+                public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                    if (task.isSuccessful()) {
+                        DocumentSnapshot document = task.getResult();
+                        if (document.exists()) {
+                            // Log.e("doc", "DocumentSnapshot data: " + document.getData());
+                            Log.e("doc", document.getData().get("name").toString());
+                            holder.customerID.setText(document.getData().get("name").toString());
+                        } else {
+                            Log.d("error", "No such document");
+                        }
+                    } else {
+                        Log.d("fail", "get failed with ", task.getException());
+                    }
+                }
+            });
+
+            if (mDataset.get(position).getDriverID()!="") {
+                userColRef.document(mDataset.get(position).getDriverID())
+                        .get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                        if (task.isSuccessful()) {
+                            DocumentSnapshot document = task.getResult();
+                            if (document.exists()) {
+                                // Log.e("doc", "DocumentSnapshot data: " + document.getData());
+                                Log.e("doc", document.getData().get("name").toString());
+                                holder.driverID.setText(document.getData().get("name").toString());
+                            } else {
+                                Log.d("error", "No such document");
+                            }
+                        } else {
+                            Log.d("fail", "get failed with ", task.getException());
+                        }
+                    }
+                });
+            }
+
         // - get element from your dataset at this position
         // - replace the contents of the view with that element
-        holder.customerID.setText(mDataset.get(position).getCustomerID());
-        holder.driverID.setText(mDataset.get(position).getDriverID());
+//        holder.customerID.setText(mDataset.get(position).getCustomerID());
+//        holder.driverID.setText(mDataset.get(position).getDriverID());
 
     }
 
