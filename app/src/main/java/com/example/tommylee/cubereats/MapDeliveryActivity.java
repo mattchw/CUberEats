@@ -117,16 +117,7 @@ public class MapDeliveryActivity extends FragmentActivity implements OnMapReadyC
 
         // destination = new LatLng(22.422546, 114.204388);
         // deliveryDest = new MarkerOptions().position(destination).title("Destination");
-        currPosition = new LatLng(location.getLatitude(), location.getLongitude());
-        userPosition = new MarkerOptions().position(currPosition).title("Your position");
 
-        routeButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                String url = getUrl(userPosition.getPosition(), deliveryDest.getPosition(), "driving");
-                new FetchURL(MapDeliveryActivity.this).execute(url, "driving");
-            }
-        });
 
         finishButton = findViewById(R.id.finishButton);
         finishButton.setOnClickListener(new View.OnClickListener() {
@@ -214,6 +205,8 @@ public class MapDeliveryActivity extends FragmentActivity implements OnMapReadyC
                     if (document.exists()) {
                         // Log.d(TAG, "DocumentSnapshot data: " + document.getData());
                         customerCoordinate = document.getGeoPoint("customerCoordinate");
+                        currPosition = new LatLng(location.getLatitude(), location.getLongitude());
+                        userPosition = new MarkerOptions().position(currPosition).title("Your position");
                         destination = new LatLng(customerCoordinate.getLatitude(), customerCoordinate.getLongitude());
                         deliveryDest = new MarkerOptions().position(destination).title("Deliver Man Position");
 
@@ -225,6 +218,14 @@ public class MapDeliveryActivity extends FragmentActivity implements OnMapReadyC
                 } else {
                     Log.d("error", "get failed with ", task.getException());
                 }
+            }
+        });
+
+        routeButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String url = getUrl(userPosition.getPosition(), deliveryDest.getPosition(), "driving");
+                new FetchURL(MapDeliveryActivity.this).execute(url, "driving");
             }
         });
     }
