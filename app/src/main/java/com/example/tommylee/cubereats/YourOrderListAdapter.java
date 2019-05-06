@@ -32,7 +32,7 @@ import java.util.ArrayList;
 public class YourOrderListAdapter extends RecyclerView.Adapter<YourOrderListAdapter.MyViewHolder> {
     private ArrayList<Order> mDataset;
     private Context mContext;
-
+    String meals="";
     private double total = 0.0;
     int counter = 0;
 
@@ -92,7 +92,7 @@ public class YourOrderListAdapter extends RecyclerView.Adapter<YourOrderListAdap
                                 DocumentSnapshot document = task.getResult();
                                 if (document.exists()) {
                                     Log.d("drivername", "DocumentSnapshot data: " + document.getData());
-                                    holder.driverName.append(document.getData().get("name").toString());
+                                    holder.driverName.setText("Driver name: "+document.getData().get("name").toString());
                                 } else {
                                     Log.d("error", "No such document");
                                 }
@@ -119,11 +119,12 @@ public class YourOrderListAdapter extends RecyclerView.Adapter<YourOrderListAdap
                             // Log.e("doc", "DocumentSnapshot data: " + document.getData());
                              Log.e("doc", document.getData().get("name").toString());
                              counter++;
-                            holder.mealName.append(" - "+document.getData().get("name").toString());
-                            holder.mealName.append("\n");
+                            meals+=(" - "+document.getData().get("name").toString());
+                            meals+=("\n");
                             total += Double.parseDouble(document.getData().get("price").toString());
                             if (counter == mDataset.get(position).getMealID().size()) {
                                 holder.totalPrice.append(""+total);
+                                holder.mealName.setText(meals);
                             }
                         } else {
                             Log.d("error", "No such document");
