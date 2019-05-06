@@ -99,8 +99,8 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
         // destination = new LatLng(22.422546, 114.204388);
         // deliveryDest = new MarkerOptions().position(destination).title("Destination");
-        currPosition = new LatLng(location.getLatitude(), location.getLongitude());
-        userPosition = new MarkerOptions().position(currPosition).title("Your position");
+//        currPosition = new LatLng(location.getLatitude(), location.getLongitude());
+        //userPosition = new MarkerOptions().position(currPosition).title("Your position");
 
         routeButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -206,7 +206,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                         destination = new LatLng(driverCoordinate.getLatitude(), driverCoordinate.getLongitude());
                         LatLng myLatLng = new LatLng(myCoordinate.getLatitude(), myCoordinate.getLongitude());
                         deliveryDest = new MarkerOptions().position(destination).title("Deliver Man Position");
-
+                        userPosition = new MarkerOptions().position(myLatLng).title("Your position");
                         driverMarker= mMap.addMarker(deliveryDest);
                         driverMarker.showInfoWindow();
                         mMap.addMarker(new MarkerOptions().position(myLatLng)
