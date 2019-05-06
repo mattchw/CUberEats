@@ -50,8 +50,8 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".RestaurantListActivity"></activity>
-        <activity android:name=".OrderDeliveryListActivity"></activity>
+        <activity android:name=".RestaurantListActivity" />
+        <activity android:name=".OrderDeliveryListActivity" />
         <activity android:name=".RestaurantDetailActivity" />
 
         <!--
@@ -75,7 +75,8 @@
             android:theme="@style/AppTheme.NoActionBar" />
         <activity android:name=".YourOrderListActivity" />
         <activity android:name=".YourOrderPayment" />
-        <activity android:name=".MapDeliveryActivity"></activity>
+        <activity android:name=".MapDeliveryActivity" />
+        <activity android:name=".OrderDeliveryDetailActivity"></activity>
     </application>
 
 </manifest>

@@ -113,6 +113,7 @@ public class YourOrderListAdapter extends RecyclerView.Adapter<YourOrderListAdap
             @Override
             public void onClick(View v) {
                 Log.e("order getpaid", "onBindViewHolder: " + mDataset.get(holder.getAdapterPosition()).getIsPaid());
+                Log.e("order docid", mDataset.get(holder.getAdapterPosition()).getDocumentID());
                 if (mDataset.get(holder.getAdapterPosition()).getIsPaid()) {
                     Log.e("PAID", "onClick");
                     Intent intent = new Intent(mContext, MapsActivity.class);

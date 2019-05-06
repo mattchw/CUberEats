@@ -15,7 +15,10 @@
     <string name="paid">Paid</string>
     <string name="unpaid">Unpaid</string>
 
+    <string name="finish_delivery">Finish Delivery</string>
+    <string name="delivery_title">Delivery Details</string>
     <string name="order_payment_title">Your Order</string>
-    <string name="make_payment">Accept Order</string>
+    <string name="make_payment">Make Payment</string>
+    <string name="accept_order">Accept Order</string>
     <string name="total_payment">Total: $</string>
 </resources>
