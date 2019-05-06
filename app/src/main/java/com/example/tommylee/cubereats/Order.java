@@ -20,6 +20,7 @@ public class Order {
     private boolean isPaid;
     private String documentID;
     private GeoPoint driverCoordinate;
+    private GeoPoint customerCoordinate;
 
     public String getCustomerID() {
         return customerID;
@@ -51,6 +52,14 @@ public class Order {
 
     public void setDriverName(String driverName) {
         this.driverName = driverName;
+    }
+
+    public GeoPoint getCustomerCoordinate() {
+        return customerCoordinate;
+    }
+
+    public void setCustomerCoordinate(GeoPoint customerCoordinate) {
+        this.customerCoordinate = customerCoordinate;
     }
 
     public GeoPoint getDriverCoordinate() {

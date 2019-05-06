@@ -59,6 +59,7 @@ public class OrderDeliveryListActivity extends BaseActivity {
                     for (QueryDocumentSnapshot document : task.getResult()) {
                         Log.d("dockx", document.getId() + " => " + document.getData());
                         Order notifPojo = document.toObject(Order.class);
+                        notifPojo.setDocumentID(document.getId());
                         resultset.add(notifPojo);
 
                     }

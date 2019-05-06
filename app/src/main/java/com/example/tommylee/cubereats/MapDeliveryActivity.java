@@ -4,6 +4,8 @@ import android.Manifest;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.location.Address;
+import android.location.Geocoder;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
@@ -15,6 +17,7 @@ import android.support.v4.content.ContextCompat;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.TextView;
 
 import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.maps.CameraUpdateFactory;
@@ -33,6 +36,9 @@ import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.GeoPoint;
 
+import java.io.IOException;
+import java.util.List;
+
 public class MapDeliveryActivity extends FragmentActivity implements OnMapReadyCallback, TaskLoadedCallback {
     private static final int REQUEST_LOCATION_PERMISSION = 1;
 
@@ -41,14 +47,18 @@ public class MapDeliveryActivity extends FragmentActivity implements OnMapReadyC
     private Double longitude, latitude;
 
     private Button routeButton;
+    private Button finishButton;
+    private TextView mapCustomerAddr;
     private MarkerOptions userPosition, deliveryDest;
     private Polyline mPolyline;
 
     LocationManager lm;
     Location location;
     LatLng destination, currPosition;
+    private String orderID;
+    private String mapMode;
 
-    GeoPoint driverCoordinate;
+    GeoPoint customerCoordinate;
     FirebaseFirestore db = FirebaseFirestore.getInstance();
     CollectionReference orderColRef = db.collection("order");
 
@@ -58,8 +68,10 @@ public class MapDeliveryActivity extends FragmentActivity implements OnMapReadyC
         setContentView(R.layout.activity_maps);
 
         Intent intent = getIntent();
-        String mapMode = getIntent().getStringExtra("mapMode");
-        String orderID = getIntent().getStringExtra("orderID");
+        mapMode = getIntent().getStringExtra("mapMode");
+        orderID = getIntent().getStringExtra("orderID");
+
+        mapCustomerAddr = findViewById(R.id.mapCustomerAddr);
 
         orderColRef
                 .document(orderID)
@@ -70,9 +82,8 @@ public class MapDeliveryActivity extends FragmentActivity implements OnMapReadyC
                     DocumentSnapshot document = task.getResult();
                     if (document.exists()) {
                         // Log.d(TAG, "DocumentSnapshot data: " + document.getData());
-                        driverCoordinate = document.getGeoPoint("driverCoordinate");
-                        destination = new LatLng(driverCoordinate.getLatitude(), driverCoordinate.getLongitude());
-                        deliveryDest = new MarkerOptions().position(destination).title("Deliver Man Position");
+                        customerCoordinate = document.getGeoPoint("customerCoordinate");
+                        mapCustomerAddr.setText(getGeo(customerCoordinate));
                     } else {
                         Log.d("emptyDoc", "No such document");
                     }
@@ -116,6 +127,14 @@ public class MapDeliveryActivity extends FragmentActivity implements OnMapReadyC
                 new FetchURL(MapDeliveryActivity.this).execute(url, "driving");
             }
         });
+
+        finishButton = findViewById(R.id.finishButton);
+        finishButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+            }
+        });
     }
 
     @Override
@@ -145,6 +164,19 @@ public class MapDeliveryActivity extends FragmentActivity implements OnMapReadyC
         }
     }
 
+    private String getGeo(GeoPoint geoPoint) {
+        Geocoder geoCoder = new Geocoder(getApplicationContext());
+        List<Address> matches = null;
+        try {
+            matches = geoCoder.getFromLocation(geoPoint.getLatitude(), geoPoint.getLongitude(), 1);
+            Address bestMatch = (matches.isEmpty() ? null : matches.get(0));
+            return bestMatch.getAddressLine(0);
+        } catch (IOException e) {
+
+        }
+        return null;
+    }
+
     private final LocationListener locationListener = new LocationListener() {
         @Override
         public void onLocationChanged(Location location) {
@@ -171,9 +203,30 @@ public class MapDeliveryActivity extends FragmentActivity implements OnMapReadyC
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
         enableMyLocation();
-        mMap.addMarker(deliveryDest);
 
-        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(destination, 15));
+        orderColRef
+                .document(orderID)
+                .get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                if (task.isSuccessful()) {
+                    DocumentSnapshot document = task.getResult();
+                    if (document.exists()) {
+                        // Log.d(TAG, "DocumentSnapshot data: " + document.getData());
+                        customerCoordinate = document.getGeoPoint("customerCoordinate");
+                        destination = new LatLng(customerCoordinate.getLatitude(), customerCoordinate.getLongitude());
+                        deliveryDest = new MarkerOptions().position(destination).title("Deliver Man Position");
+
+                        mMap.addMarker(deliveryDest);
+                        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(destination, 15));
+                    } else {
+                        Log.d("emptyDoc", "No such document");
+                    }
+                } else {
+                    Log.d("error", "get failed with ", task.getException());
+                }
+            }
+        });
     }
 
     private String getUrl(LatLng origin, LatLng dest, String directionMode) {

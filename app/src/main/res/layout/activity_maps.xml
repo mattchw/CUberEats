@@ -18,7 +18,7 @@
         android:id="@+id/card_view"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="10dp"
+        android:layout_margin="7dp"
         app:layout_constraintBottom_toBottomOf="parent">
 
         <LinearLayout
@@ -41,11 +41,11 @@
                 android:layout_weight="2"
                 android:orientation="vertical">
 
-                <TextView
-                    android:id="@+id/mapCustomerName"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/customer_name_label" />
+                <!--<TextView-->
+                    <!--android:id="@+id/mapCustomerName"-->
+                    <!--android:layout_width="wrap_content"-->
+                    <!--android:layout_height="wrap_content"-->
+                    <!--android:text="@string/customer_name_label" />-->
 
                 <TextView
                     android:id="@+id/mapCustomerAddr"
@@ -54,11 +54,24 @@
                     android:layout_marginTop="8dp"
                     android:text="@string/customer_addr_label" />
 
-                <Button
-                    android:id="@+id/routeButton"
+                <LinearLayout
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="@string/map_suggest_route"/>
+                    android:orientation="horizontal">
+                    <Button
+                        android:id="@+id/routeButton"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textSize="12sp"
+                        android:text="@string/map_suggest_route"/>
+
+                    <Button
+                        android:id="@+id/finishButton"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textSize="12sp"
+                        android:text="@string/finish_delivery"/>
+                </LinearLayout>
 
             </LinearLayout>
         </LinearLayout>
