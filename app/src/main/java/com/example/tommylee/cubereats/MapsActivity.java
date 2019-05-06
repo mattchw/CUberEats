@@ -22,7 +22,10 @@ import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapFragment;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.BitmapDescriptorFactory;
+import com.google.android.gms.maps.model.CircleOptions;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.maps.model.Polyline;
 import com.google.android.gms.maps.model.PolylineOptions;
@@ -33,13 +36,16 @@ import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.GeoPoint;
 
+import java.util.Timer;
+import java.util.TimerTask;
+
 public class MapsActivity extends FragmentActivity implements OnMapReadyCallback, TaskLoadedCallback {
     private static final int REQUEST_LOCATION_PERMISSION = 1;
 
     private GoogleMap mMap;
 
     private Double longitude, latitude;
-
+    Marker driverMarker;
     private Button routeButton;
     private MarkerOptions userPosition, deliveryDest;
     private Polyline mPolyline;
@@ -47,7 +53,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     LocationManager lm;
     Location location;
     LatLng destination, currPosition;
-
+    GeoPoint myCoordinate;
     GeoPoint driverCoordinate;
     FirebaseFirestore db = FirebaseFirestore.getInstance();
     CollectionReference orderColRef = db.collection("order");
@@ -59,7 +65,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_maps);
-
+        mTimer = new Timer();
         Intent intent = getIntent();
         mapMode = getIntent().getStringExtra("mapMode");
         orderID = getIntent().getStringExtra("orderID");
@@ -153,11 +159,38 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
         }
     };
+    private Timer mTimer;
+    private void UploadCurrentPosition() {
+        mTimer.schedule(new TimerTask() {
+            @Override
+            public void run() {
 
+
+
+                orderColRef
+                        .document(orderID).get().addOnCompleteListener(
+                                new OnCompleteListener<DocumentSnapshot>() {
+                                    @Override
+                                    public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                                       if (task.isSuccessful()) {
+                                           GeoPoint geoPoint=task.getResult().getGeoPoint("driverCoordinate");
+                                           LatLng latLng= new LatLng(geoPoint.getLatitude(),geoPoint.getLongitude());
+                                           driverMarker.setPosition(latLng);
+                                           driverMarker.showInfoWindow();
+                                       }
+                                    }
+                                }
+                        );
+
+
+
+            }
+        }, 500, 3000);
+    }
     @Override
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
-        enableMyLocation();
+        //enableMyLocation();
 
         orderColRef
                 .document(orderID)
@@ -169,11 +202,19 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                     if (document.exists()) {
                         Log.d("TAG", "Geo: " + document.getGeoPoint("driverCoordinate").getLatitude());
                         driverCoordinate = document.getGeoPoint("driverCoordinate");
+                        myCoordinate = document.getGeoPoint("customerCoordinate");
                         destination = new LatLng(driverCoordinate.getLatitude(), driverCoordinate.getLongitude());
+                        LatLng myLatLng = new LatLng(myCoordinate.getLatitude(), myCoordinate.getLongitude());
                         deliveryDest = new MarkerOptions().position(destination).title("Deliver Man Position");
 
-                        mMap.addMarker(deliveryDest);
-                        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(destination, 15));
+                        driverMarker= mMap.addMarker(deliveryDest);
+                        driverMarker.showInfoWindow();
+                        mMap.addMarker(new MarkerOptions().position(myLatLng)
+                                .icon(BitmapDescriptorFactory
+                                .defaultMarker(BitmapDescriptorFactory.HUE_AZURE))
+                                .title("Your current Position")).showInfoWindow();
+                        UploadCurrentPosition();
+                        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(myLatLng, 15));
                     } else {
                         Log.d("emptyDoc", "No such document");
                     }

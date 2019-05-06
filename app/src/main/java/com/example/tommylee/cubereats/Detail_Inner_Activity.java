@@ -135,16 +135,8 @@ public class Detail_Inner_Activity extends AppCompatActivity {
         });
     }
     private void addExist(FirebaseFirestore db,String path){
-        final Map<String, Object> order = new HashMap<>();
-        ArrayList mealId = new ArrayList<String>();
-        mealId.add(id);
-        order.put("mealID",mealId);
-
         final DocumentReference ref=db.collection("order").document(path);
-
                 ref.update("mealID",FieldValue.arrayUnion(id));
-
-
 
 
     }
@@ -156,7 +148,7 @@ public class Detail_Inner_Activity extends AppCompatActivity {
         Map<String, Object> order = new HashMap<>();
         ArrayList mealId = new ArrayList<String>();
         mealId.add(id);
-        order.put("customerCoordinate",new GeoPoint(0,0));
+        order.put("customerCoordinate",new GeoPoint(22.417976,114.207267));
         order.put("customerID",FirebaseAuth.getInstance().getCurrentUser().getUid());
         order.put("driverCoordinate",new GeoPoint(0,0));
         order.put("driverID","");

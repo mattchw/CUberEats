@@ -32,12 +32,16 @@ import com.google.android.gms.maps.model.PolylineOptions;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.CollectionReference;
+import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.GeoPoint;
 
 import java.io.IOException;
 import java.util.List;
+import java.util.Timer;
+import java.util.TimerTask;
 
 public class MapDeliveryActivity extends FragmentActivity implements OnMapReadyCallback, TaskLoadedCallback {
     private static final int REQUEST_LOCATION_PERMISSION = 1;
@@ -61,11 +65,26 @@ public class MapDeliveryActivity extends FragmentActivity implements OnMapReadyC
     GeoPoint customerCoordinate;
     FirebaseFirestore db = FirebaseFirestore.getInstance();
     CollectionReference orderColRef = db.collection("order");
+    private Timer mTimer;
+    private void UploadCurrentPosition() {
+        mTimer.schedule(new TimerTask() {
+            @Override
+            public void run() {
+
+                currPosition = new LatLng(location.getLatitude(), location.getLongitude());
+                Log.d("hi",currPosition.latitude+" "+currPosition.longitude);
+                orderColRef
+                        .document(orderID).update("driverCoordinate",new GeoPoint(currPosition.latitude,currPosition.longitude));
+
+            }
+        }, 500, 7000);
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_maps);
+        mTimer = new Timer();
 
         Intent intent = getIntent();
         mapMode = getIntent().getStringExtra("mapMode");
@@ -168,6 +187,10 @@ public class MapDeliveryActivity extends FragmentActivity implements OnMapReadyC
         return null;
     }
 
+    private void UploadPosition(Double latitude,Double longitude){
+        orderColRef
+                .document(orderID).update("driverCoordinate",new GeoPoint(latitude,longitude));
+    }
     private final LocationListener locationListener = new LocationListener() {
         @Override
         public void onLocationChanged(Location location) {
@@ -175,6 +198,7 @@ public class MapDeliveryActivity extends FragmentActivity implements OnMapReadyC
             latitude = location.getLatitude();
             Log.e("longitude", "longitude: " + longitude);
             Log.e("latitude", "latitude: " + latitude);
+            UploadPosition(latitude,longitude);
         }
         @Override
         public void onStatusChanged(String provider, int status, Bundle extras) {
