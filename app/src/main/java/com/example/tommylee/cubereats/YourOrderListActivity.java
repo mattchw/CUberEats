@@ -102,11 +102,13 @@ public class YourOrderListActivity extends BaseActivity {
                                 if(!result_set.isEmpty()&&mAdapter!=null) {
                                     result_set.get(0).setDriverID(doc.get("driverID").toString());
                                     mAdapter.notifyDataSetChanged();
-                                    View parentLayout = findViewById(android.R.id.content);
-                                    Snackbar sb= Snackbar.make(parentLayout, "Your order has been taken by a driver", Snackbar.LENGTH_LONG);
-                                    View sbView = sb.getView();
-                                    sbView.setBackgroundColor(ContextCompat.getColor(getApplicationContext(), R.color.green));
-                                    sb.show();
+                                    if(result_set.get(0).getDriverID()!="") {
+                                        View parentLayout = findViewById(android.R.id.content);
+                                        Snackbar sb = Snackbar.make(parentLayout, "Your order has been taken by a driver", Snackbar.LENGTH_LONG);
+                                        View sbView = sb.getView();
+                                        sbView.setBackgroundColor(ContextCompat.getColor(getApplicationContext(), R.color.green));
+                                        sb.show();
+                                    }
                                 }
                             }
                         }
