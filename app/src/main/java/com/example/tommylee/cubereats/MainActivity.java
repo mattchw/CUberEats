@@ -72,16 +72,16 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        mapButton = (Button) findViewById(R.id.map_button);
-
-        mapButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(MainActivity.this, MapsActivity.class);
-                intent.putExtra("cuisineId", "2");
-                startActivityForResult(intent, 1);
-            }
-        });
+//        mapButton = (Button) findViewById(R.id.map_button);
+//
+//        mapButton.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                Intent intent = new Intent(MainActivity.this, MapsActivity.class);
+//                intent.putExtra("cuisineId", "2");
+//                startActivityForResult(intent, 1);
+//            }
+//        });
     }
 
     @Override

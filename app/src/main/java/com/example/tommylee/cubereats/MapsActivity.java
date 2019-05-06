@@ -52,37 +52,17 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     FirebaseFirestore db = FirebaseFirestore.getInstance();
     CollectionReference orderColRef = db.collection("order");
 
+    String mapMode;
+    String orderID;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_maps);
 
         Intent intent = getIntent();
-        String mapMode = getIntent().getStringExtra("mapMode");
-        String orderID = getIntent().getStringExtra("orderID");
-
-        orderColRef
-                .document(orderID)
-                .get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
-            @Override
-            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-                if (task.isSuccessful()) {
-                    DocumentSnapshot document = task.getResult();
-                    if (document.exists()) {
-                        // Log.d(TAG, "DocumentSnapshot data: " + document.getData());
-                        driverCoordinate = document.getGeoPoint("driverCoordinate");
-                        destination = new LatLng(driverCoordinate.getLatitude(), driverCoordinate.getLongitude());
-                        deliveryDest = new MarkerOptions().position(destination).title("Deliver Man Position");
-                    } else {
-                        Log.d("emptyDoc", "No such document");
-                    }
-                } else {
-                    Log.d("error", "get failed with ", task.getException());
-                }
-            }
-        });
-
-
+        mapMode = getIntent().getStringExtra("mapMode");
+        orderID = getIntent().getStringExtra("orderID");
 
         if (mapMode.equals("customer")) {
             View mapCardView = findViewById(R.id.card_view);
@@ -178,9 +158,31 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
         enableMyLocation();
-        mMap.addMarker(deliveryDest);
 
-        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(destination, 15));
+        orderColRef
+                .document(orderID)
+                .get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                if (task.isSuccessful()) {
+                    DocumentSnapshot document = task.getResult();
+                    if (document.exists()) {
+                        Log.d("TAG", "Geo: " + document.getGeoPoint("driverCoordinate").getLatitude());
+                        driverCoordinate = document.getGeoPoint("driverCoordinate");
+                        destination = new LatLng(driverCoordinate.getLatitude(), driverCoordinate.getLongitude());
+                        deliveryDest = new MarkerOptions().position(destination).title("Deliver Man Position");
+
+                        mMap.addMarker(deliveryDest);
+                        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(destination, 15));
+                    } else {
+                        Log.d("emptyDoc", "No such document");
+                    }
+                } else {
+                    Log.d("error", "get failed with ", task.getException());
+                }
+            }
+        });
+
     }
 
     private String getUrl(LatLng origin, LatLng dest, String directionMode) {
