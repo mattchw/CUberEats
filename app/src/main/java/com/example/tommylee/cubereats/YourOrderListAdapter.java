@@ -40,6 +40,7 @@ public class YourOrderListAdapter extends RecyclerView.Adapter<YourOrderListAdap
     FirebaseFirestore db = FirebaseFirestore.getInstance();
     CollectionReference orderColRef = db.collection("order");
     CollectionReference mealColRef = db.collection("meal");
+    CollectionReference userColRef = db.collection("user");
 
     // Provide a reference to the views for each data item
     // Complex data items may need more than one view per item, and
@@ -83,7 +84,23 @@ public class YourOrderListAdapter extends RecyclerView.Adapter<YourOrderListAdap
         if (mDataset.get(position).getDriverID() == "") {
             holder.driverName.append("Not yet taken");
         } else {
-            holder.driverName.append(mDataset.get(position).getDriverID());
+            userColRef.document(mDataset.get(position).getDriverID()).get()
+                    .addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                        @Override
+                        public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                            if (task.isSuccessful()) {
+                                DocumentSnapshot document = task.getResult();
+                                if (document.exists()) {
+                                    Log.d("drivername", "DocumentSnapshot data: " + document.getData());
+                                    holder.driverName.append(document.getData().get("name").toString());
+                                } else {
+                                    Log.d("error", "No such document");
+                                }
+                            } else {
+                                Log.d("error", "get failed with ", task.getException());
+                            }
+                        }
+                    });
         }
         if (mDataset.get(position).getIsPaid()) {
             holder.paidStatus.setText(R.string.paid);
