@@ -105,8 +105,8 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         routeButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String url = getUrl(userPosition.getPosition(), deliveryDest.getPosition(), "driving");
-                new FetchURL(MapsActivity.this).execute(url, "driving");
+                String url = getUrl(userPosition.getPosition(), deliveryDest.getPosition(), "walking");
+                new FetchURL(MapsActivity.this).execute(url, "walking");
             }
         });
     }
@@ -145,6 +145,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             latitude = location.getLatitude();
             Log.e("longitude", "longitude: " + longitude);
             Log.e("latitude", "latitude: " + latitude);
+
         }
         @Override
         public void onStatusChanged(String provider, int status, Bundle extras) {
