@@ -210,6 +210,8 @@ public class MapDeliveryActivity extends FragmentActivity implements OnMapReadyC
     private void UploadPosition(Double latitude,Double longitude){
         orderColRef
                 .document(orderID).update("driverCoordinate",new GeoPoint(latitude,longitude));
+        String url = getUrl(userPosition.getPosition(), new LatLng(latitude,longitude), "walking");
+        new FetchURL(MapDeliveryActivity.this).execute(url, "walking");
     }
     private final LocationListener locationListener = new LocationListener() {
         @Override
@@ -218,6 +220,7 @@ public class MapDeliveryActivity extends FragmentActivity implements OnMapReadyC
             latitude = location.getLatitude();
             Log.e("longitude", "longitude: " + longitude);
             Log.e("latitude", "latitude: " + latitude);
+            if(userPosition!=null)
             UploadPosition(latitude,longitude);
         }
         @Override
@@ -268,8 +271,8 @@ public class MapDeliveryActivity extends FragmentActivity implements OnMapReadyC
         routeButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String url = getUrl(userPosition.getPosition(), deliveryDest.getPosition(), "driving");
-                new FetchURL(MapDeliveryActivity.this).execute(url, "driving");
+                String url = getUrl(userPosition.getPosition(), deliveryDest.getPosition(), "walking");
+                new FetchURL(MapDeliveryActivity.this).execute(url, "walking");
             }
         });
     }
@@ -294,6 +297,7 @@ public class MapDeliveryActivity extends FragmentActivity implements OnMapReadyC
     public void onTaskDone(Object... values) {
         if (mPolyline != null)
             mPolyline.remove();
+        Log.d("polyline","ply");
         mPolyline = mMap.addPolyline((PolylineOptions) values[0]);
     }
 
